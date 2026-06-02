@@ -11,7 +11,7 @@ export const PROCESS_STEPS: ProcessStep[] = [
 
 export const AD_SERVICES: AdService[] = [
   { icon: 'BookOpen', title: '블로그 업로드' },
-  { icon: 'Instagram', title: '인스타 업로드' },
+  { icon: 'Camera', title: '인스타 업로드' },
   { icon: 'MessageSquare', title: '스레드 업로드' },
   { icon: 'Search', title: '네이버 키워드' },
   { icon: 'MapPin', title: '당근플레이스' },
