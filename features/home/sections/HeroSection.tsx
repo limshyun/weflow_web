@@ -1,66 +1,113 @@
 'use client';
 
 import Link from 'next/link';
-import { HERO_TAGS } from '@/data/homeText';
+import Image from 'next/image';
+import { HERO } from '@/data/homeText';
 
 export default function HeroSection() {
   return (
-    <section className="min-h-screen flex items-center justify-center section-padding relative overflow-hidden">
-      {/* 배경 그라디언트 오버레이 */}
-      <div className="absolute inset-0 bg-gradient-to-b from-cyan-950/10 via-transparent to-transparent pointer-events-none" />
+    <section className="relative pt-24 pb-16 px-4 sm:px-6 lg:px-8 overflow-hidden">
+      {/* 앰비언트 글로우 블롭 */}
+      <div className="absolute -top-40 right-0 w-[800px] h-[800px] bg-cyan-400/[0.08] rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute top-20 -left-40 w-96 h-96 bg-blue-600/[0.12] rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[600px] h-64 bg-blue-700/[0.08] rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute inset-0 bg-linear-to-b from-cyan-950/10 via-transparent to-blue-950/15 pointer-events-none" />
 
-      <div className="relative z-10 max-w-4xl mx-auto text-center">
-        {/* 배지 */}
-        <div className="inline-flex items-center px-4 py-2 rounded-full border border-white/20 bg-white/5 text-xs text-slate-300 mb-8">
-          랜딩&amp;홈페이지 제작 · 광고 운영 · 검색 상단 노출 · 맞춤형 웹 솔루션
-        </div>
+      <div className="relative max-w-7xl mx-auto">
+        <div className="flex flex-col lg:flex-row lg:items-center lg:gap-16 xl:gap-24">
 
-        {/* 헤드라인 */}
-        <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight mb-6">
-          문의로 이어지는
-          <br />
-          홈페이지를 만듭니다
-        </h1>
+          {/* 좌측: 텍스트 */}
+          <div className="flex-1 py-8 lg:py-16">
+            {/* 배지 */}
+            <div className="inline-flex items-center px-4 py-2 rounded-full border border-white/20 bg-white/5 text-xs text-slate-300 mb-8">
+              {HERO.badge}
+            </div>
 
-        {/* 서브텍스트 */}
-        <p className="text-slate-400 text-base md:text-lg mb-10 leading-relaxed">
-          홈페이지 제작부터 광고 연동·운영 관리까지
-          <br className="hidden md:block" />
-          단순 제작이 아닌 문의 구조까지 설계합니다
-        </p>
+            {/* 헤드라인 */}
+            <h1 className="text-5xl sm:text-6xl lg:text-6xl xl:text-7xl font-black leading-tight tracking-tight mb-6 bg-linear-to-br from-white via-blue-100 to-violet-300 bg-clip-text text-transparent">
+              {HERO.headline[0]}
+              <br />
+              {HERO.headline[1]}
+              <br />
+              {HERO.headline[2]}
+            </h1>
 
-        {/* 버튼 3개 */}
-        <div className="flex flex-wrap items-center justify-center gap-3 mb-10">
-          <button
-            onClick={() => window.dispatchEvent(new Event('open-diagnosis-modal'))}
-            className="gradient-blue px-6 py-3 rounded-xl font-medium text-sm"
-          >
-            무료 진단 신청
-          </button>
-          <Link
-            href="/cases"
-            className="px-6 py-3 rounded-xl font-medium text-sm border border-white/20 text-white hover:bg-white/5 transition-colors"
-          >
-            성공 사례 보기
-          </Link>
-          <Link
-            href="/landing"
-            className="px-6 py-3 rounded-xl font-medium text-sm border border-white/20 text-slate-300 hover:bg-white/5 transition-colors"
-          >
-            랜딩 페이지 사례
-          </Link>
-        </div>
+            <p className="text-slate-400 text-base sm:text-lg leading-relaxed mb-8 max-w-lg">
+              {HERO.sub[0]}
+              <br />
+              {HERO.sub[1]}
+            </p>
 
-        {/* 태그 박스 */}
-        <div className="flex flex-wrap items-center justify-center gap-2">
-          {HERO_TAGS.map((tag) => (
-            <span
-              key={tag}
-              className="inline-flex items-center px-3 py-1 rounded-full border border-white/20 text-xs text-slate-300 bg-white/5"
-            >
-              {tag}
-            </span>
-          ))}
+            {/* 버튼 */}
+            <div className="flex flex-wrap gap-3 mb-10">
+              <button
+                onClick={() => window.dispatchEvent(new Event('open-diagnosis-modal'))}
+                className="inline-flex items-center px-7 py-3.5 rounded-xl font-bold text-white text-sm gradient-blue"
+              >
+                {HERO.buttons[0].label}
+              </button>
+              {HERO.buttons.slice(1).map((btn) => (
+                <Link
+                  key={btn.label}
+                  href={btn.href}
+                  className="inline-flex items-center px-6 py-3.5 rounded-xl font-semibold text-slate-300 text-sm bg-slate-900/60 backdrop-blur-sm border border-white/[0.08] hover:border-blue-500/40 hover:text-white transition-all duration-300"
+                >
+                  {btn.label}
+                </Link>
+              ))}
+            </div>
+
+            {/* 태그 */}
+            <div className="flex flex-wrap gap-3">
+              {HERO.tags.map((tag) => (
+                <div
+                  key={tag.title}
+                  className="px-4 py-2.5 bg-slate-900/50 backdrop-blur-sm border border-white/[0.07] rounded-lg hover:border-blue-500/30 transition-all duration-300"
+                >
+                  <p className="text-white text-xs font-bold">{tag.title}</p>
+                  <p className="text-slate-400 text-xs">{tag.desc}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* 우측: 비주얼 (lg+) */}
+          <div className="hidden lg:flex flex-1 items-center justify-center relative min-h-[480px]">
+            <div className="absolute w-80 h-80 bg-blue-600/[0.18] rounded-full blur-3xl pointer-events-none" />
+            <div className="absolute w-56 h-72 bg-violet-600/[0.12] rounded-full blur-3xl translate-x-20 pointer-events-none" />
+
+            {/* 동심원 링 */}
+            <div className="absolute w-[400px] h-[400px] rounded-full border border-blue-500/[0.08]" />
+            <div className="absolute w-[300px] h-[300px] rounded-full border border-violet-500/[0.08]" />
+            <div className="absolute w-[210px] h-[210px] rounded-full border border-blue-400/[0.06]" />
+
+            {/* 메인 이미지 */}
+            <div className="relative z-10 mt-20">
+              <Image
+                src="/main_icon.png"
+                alt="WEFLOW"
+                width={420}
+                height={420}
+                className="object-contain drop-shadow-2xl"
+                priority
+              />
+            </div>
+
+            {/* 플로팅 배지 */}
+            <div className="absolute top-14 right-4 z-10 px-3.5 py-2.5 bg-slate-900/80 backdrop-blur-md border border-white/[0.08] rounded-xl shadow-lg">
+              <div className="text-white font-bold text-sm">3~7일</div>
+              <div className="text-slate-400 text-xs">빠른 납품</div>
+            </div>
+            <div className="absolute bottom-20 left-4 z-10 px-3.5 py-2.5 bg-slate-900/80 backdrop-blur-md border border-white/[0.08] rounded-xl shadow-lg">
+              <div className="text-white font-bold text-sm">24시간</div>
+              <div className="text-slate-400 text-xs">상담 가능</div>
+            </div>
+            <div className="absolute bottom-8 right-10 z-10 flex items-center gap-1.5 px-3.5 py-2.5 bg-slate-900/80 backdrop-blur-md border border-emerald-500/20 rounded-xl shadow-lg">
+              <div className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+              <span className="text-emerald-400 text-xs font-semibold">실시간 상담중</span>
+            </div>
+          </div>
+
         </div>
       </div>
     </section>

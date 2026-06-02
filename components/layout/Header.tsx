@@ -27,7 +27,7 @@ export default function Header() {
       <div className="max-w-7xl mx-auto px-4 h-full flex items-center justify-between">
         {/* 로고 */}
         <Link href="/" className="flex items-center gap-2" onClick={() => setMenuOpen(false)}>
-          <Image src="/logo_icon.png" alt="WEFLOW" width={32} height={32} className="rounded-sm" />
+          <Image src="/logo_icon.png" alt="WEFLOW" width={48} height={48} className="object-contain" />
           <span className="text-xl font-bold tracking-tight">
             <span className="text-white">WE</span>
             <span className="text-gradient">FLOW</span>

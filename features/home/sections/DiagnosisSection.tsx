@@ -1,44 +1,53 @@
 'use client';
 
-import { Check } from 'lucide-react';
-import StickyForm from '@/components/ui/StickyForm';
-import { DIAGNOSIS_CHECKLIST } from '@/data/homeText';
+import Link from 'next/link';
+import { CheckCircle2, Search } from 'lucide-react';
+import { DIAGNOSIS } from '@/data/homeText';
 
 export default function DiagnosisSection() {
   return (
-    <section className="section-padding bg-slate-950/30">
-      <div className="max-w-7xl mx-auto">
-        <div className="flex flex-col lg:flex-row gap-12 items-start">
-          {/* 좌측 콘텐츠 */}
-          <div className="flex-1">
-            <div className="card-base p-8 md:p-12">
-              <h2 className="text-2xl lg:text-3xl font-bold text-white mb-8">
-                무료진단 후 나의 개선점 확인해보기
-              </h2>
+    <section className="relative py-16 px-4 sm:px-6 lg:px-8 overflow-hidden">
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-125 h-64 bg-cyan-400/7 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute bottom-0 right-0 w-64 h-64 bg-blue-600/8 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute inset-0 bg-linear-to-r from-blue-950/10 via-transparent to-blue-950/10 pointer-events-none" />
 
-              <ul className="space-y-4 mb-10">
-                {DIAGNOSIS_CHECKLIST.map((item) => (
-                  <li key={item} className="flex items-center gap-3">
-                    <div className="w-6 h-6 rounded-full gradient-blue flex items-center justify-center shrink-0">
-                      <Check size={13} className="text-white" />
-                    </div>
-                    <span className="text-slate-200 text-base">{item}</span>
-                  </li>
-                ))}
-              </ul>
+      <div className="relative max-w-xl mx-auto">
+        {/* 헤더 */}
+        <div className="text-center mb-8">
+          <h2 className="text-2xl sm:text-3xl font-black text-white mb-3 leading-tight">
+            {DIAGNOSIS.title}
+          </h2>
+          <p className="text-slate-400 text-sm">{DIAGNOSIS.subtitle}</p>
+        </div>
 
-              <button
-                onClick={() => window.dispatchEvent(new Event('open-diagnosis-modal'))}
-                className="gradient-blue px-8 py-3 rounded-xl font-medium text-sm"
+        {/* 메인 카드 */}
+        <div className="bg-[#080d1a] border border-slate-800 rounded-2xl overflow-hidden shadow-xl shadow-black/40">
+          <div className="px-6 pt-6">
+            {DIAGNOSIS.items.map((item, idx) => (
+              <div
+                key={item.main}
+                className={`flex items-start gap-4 py-5 ${
+                  idx < DIAGNOSIS.items.length - 1 ? 'border-b border-slate-800' : ''
+                }`}
               >
-                무료진단 후 견적 받기
-              </button>
-            </div>
+                <CheckCircle2 size={20} className="text-cyan-400 shrink-0 mt-0.5" />
+                <p className="text-sm text-slate-200 leading-relaxed">
+                  <span className="font-semibold text-white">{item.main}</span>
+                  {' '}
+                  <span className="text-slate-400">({item.detail})</span>
+                </p>
+              </div>
+            ))}
           </div>
 
-          {/* 우측 StickyForm — 데스크탑 전용 */}
-          <div className="hidden lg:block">
-            <StickyForm />
+          <div className="px-6 pb-6 pt-5">
+            <Link
+              href="/reservation"
+              className="flex items-center justify-center gap-2.5 w-full py-4 rounded-xl font-bold text-white text-sm bg-linear-to-r from-blue-600 to-cyan-400 hover:from-blue-500 hover:to-cyan-300 transition-all shadow-lg shadow-blue-500/30"
+            >
+              <Search size={16} />
+              {DIAGNOSIS.ctaButton}
+            </Link>
           </div>
         </div>
       </div>

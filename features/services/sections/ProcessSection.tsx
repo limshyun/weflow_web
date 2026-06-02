@@ -20,7 +20,7 @@ export default function ProcessSection() {
                   {step.number}
                 </div>
                 {idx < PROCESS_STEPS.length - 1 && (
-                  <div className="w-px flex-1 bg-gradient-to-b from-cyan-500/40 to-transparent my-1" />
+                  <div className="w-px flex-1 bg-linear-to-b from-cyan-500/40 to-transparent my-1" />
                 )}
               </div>
 

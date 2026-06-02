@@ -17,6 +17,7 @@ body {
   background-size: 24px 24px;
   color: #f1f5f9;
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
   word-break: keep-all;
 }
 
@@ -24,15 +25,47 @@ body {
 .gradient-blue {
   background: linear-gradient(135deg, #22d3ee 0%, #2563eb 100%);
   box-shadow: 0 0 24px rgba(34, 211, 238, 0.35), 0 4px 15px rgba(37, 99, 235, 0.25);
-  color: #ffffff;
-  border: none;
-  cursor: pointer;
-  transition: opacity 0.2s ease, transform 0.2s ease;
+  transition: box-shadow 0.3s ease, opacity 0.2s ease;
 }
 
 .gradient-blue:hover {
-  opacity: 0.9;
-  transform: translateY(-1px);
+  box-shadow: 0 0 45px rgba(34, 211, 238, 0.55), 0 4px 25px rgba(37, 99, 235, 0.4);
+  opacity: 0.92;
+}
+
+/* ─── 앰버 왕관 그라디언트 (WEFLOW CARE 강조) ─── */
+.crown-gradient {
+  background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+  box-shadow: 0 0 20px rgba(245, 158, 11, 0.4);
+}
+
+/* ─── 그라디언트 카드 배경 ─── */
+.gradient-card {
+  background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+}
+
+/* ─── 카드 기본 ─── */
+.card-base {
+  background: rgba(15, 23, 42, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 0.75rem;
+  transition: border-color 0.2s ease, transform 0.2s ease;
+}
+
+.card-base:hover {
+  border-color: rgba(34, 211, 238, 0.3);
+}
+
+/* ─── 카드 hover 글로우 ─── */
+.card-glow:hover {
+  box-shadow: 0 0 0 1px rgba(34, 211, 238, 0.2), 0 0 35px rgba(34, 211, 238, 0.08);
+}
+
+/* ─── sticky 사이드바 ─── */
+.sticky-sidebar {
+  position: sticky;
+  top: 80px;
+  height: fit-content;
 }
 
 /* ─── 섹션 공통 패딩 ─── */
@@ -63,19 +96,23 @@ body {
 
 /* ─── fadeInUp ─── */
 @keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
 .animate-fade-in-up {
   opacity: 0;
   animation: fadeInUp 0.6s ease-out forwards;
+}
+
+/* ─── 모달 등장 ─── */
+@keyframes modalIn {
+  from { opacity: 0; transform: scale(0.96) translateY(8px); }
+  to   { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+.animate-modal-in {
+  animation: modalIn 0.22s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 /* ─── 텍스트 그라디언트 ─── */
@@ -86,32 +123,29 @@ body {
   background-clip: text;
 }
 
-/* ─── 카드 기본 ─── */
-.card-base {
-  background: rgba(15, 23, 42, 0.5);
-  border: 1px solid rgba(255, 255, 255, 0.07);
-  border-radius: 0.75rem;
-  transition: border-color 0.2s ease, transform 0.2s ease;
-}
-
-.card-base:hover {
-  border-color: rgba(34, 211, 238, 0.3);
+/* ─── 인풋 포커스 ─── */
+input:focus, textarea:focus, select:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
 }
 
 /* ─── 커스텀 스크롤바 ─── */
-::-webkit-scrollbar {
-  width: 6px;
-}
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: #0a0f1e; }
+::-webkit-scrollbar-thumb { background: #334155; border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: #475569; }
 
-::-webkit-scrollbar-track {
-  background: #0a0f1e;
-}
+/* ─── 스크롤바 숨기기 ─── */
+.scrollbar-hide::-webkit-scrollbar { display: none; }
+.scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
 
-::-webkit-scrollbar-thumb {
-  background: #334155;
-  border-radius: 3px;
-}
+/* ─── 모바일 가로 스크롤바 ─── */
+.mobile-scrollbar::-webkit-scrollbar { height: 6px; }
+.mobile-scrollbar::-webkit-scrollbar-track { background: #1e293b; border-radius: 9999px; }
+.mobile-scrollbar::-webkit-scrollbar-thumb { background: #22d3ee; border-radius: 9999px; }
+.mobile-scrollbar { scrollbar-width: thin; scrollbar-color: #22d3ee #1e293b; }
 
-::-webkit-scrollbar-thumb:hover {
-  background: #475569;
-}
+/* ─── iOS 안전 영역 ─── */
+.pb-safe { padding-bottom: env(safe-area-inset-bottom, 0px); }
+.pt-safe { padding-top: env(safe-area-inset-top, 0px); }
