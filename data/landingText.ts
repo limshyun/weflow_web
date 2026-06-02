@@ -1,46 +1,51 @@
-export const CARE_PLAN_FEATURES = [
-  {
-    icon: 'Zap',
-    title: '빠른 제작 진행',
-    description:
-      '랜딩페이지 3~4일 / 홈페이지 약 1주일\n빠르게 제작하고 빠르게 운영 시작합니다.',
-  },
-  {
-    icon: 'Wallet',
-    title: '합리적인 비용',
-    description:
-      '불필요한 비용 없이\n필요한 기능만 구성하여\n가성비 + 실속 + 퀄리티를 함께 제공합니다.',
-  },
-  {
-    icon: 'Clock',
-    title: '24시간 상담 가능',
-    description:
-      '정해진 시간만 기다리지 마세요.\n문의가 생길 때 언제든\n빠른 상담 및 피드백 가능합니다.',
-  },
-  {
-    icon: 'Settings',
-    title: '제작 후 운영 관리',
-    description:
-      '홈페이지 만들고 끝이 아닙니다.\n검색 등록, 수정, 유지보수,\n운영 관리까지 함께합니다.',
-  },
-  {
-    icon: 'Megaphone',
-    title: '광고 연동 지원',
-    description:
-      '홈페이지 + 랜딩페이지 + 광고\n한 번에 연결하여 문의가 들어오는 구조를 만듭니다.\n인스타, 스레드, 블로그, 카카오톡, 당근 플레이스 등',
-  },
-];
+export const LANDING_NOTICE =
+  '※ 해당 페이지의 기능 및 혜택 안내는 랜딩페이지에서만 제공되는 내용입니다.';
 
-export const WHY_WEFLOW_POINTS = [
-  '문의 증가 구조 설계',
-  '업종별 고객 흐름 분석',
-  '상담 버튼 위치 최적화',
-  '모바일 문의 동선 구성',
-];
+export const LANDING_HERO = {
+  badge: '랜딩페이지 · 홈페이지 · 광고 운영 · 사후관리',
+  headline: ['문의로 이어지는', '홈페이지를 만듭니다'],
+  sub: '기획부터 제작, 광고 연동, 운영 관리까지 WEFLOW가 함께합니다.',
+  buttons: [
+    { label: '무료 진단 후 견적받기 →', href: '/#form', primary: true },
+    { label: '실제 제작 사례 보기 →', href: '/cases', primary: false },
+  ],
+};
 
-export const LANDING_DIAGNOSIS_CHECKLIST = [
-  '문의 구조 진단',
-  '디자인 점검',
-  '검색 노출 분석',
-  '문의 개선 제안',
-];
+export const LANDING_QUOTE = {
+  headline: [
+    '사람들은 검색하고 비교한 뒤 문의합니다.',
+    '홈페이지만 필요한 시대는 지났습니다.',
+  ],
+  sub: [
+    '어디에 맡길지, 광고는 어떻게 해야 할지 고민되셨나요?',
+    'WEFLOW는 랜딩페이지 + 홈페이지 + 광고 + 사후관리까지',
+    '저렴한 비용과 높은 퀄리티로 한 번에 해결합니다.',
+  ],
+};
+
+export const LANDING_STRUCTURE = {
+  title: '문의 증가 구조 설계',
+  items: [
+    {
+      title: '업종별 고객 흐름 분석',
+      desc: '업종 특성에 맞게 고객이 어떻게 검색하고 이동하는지 분석합니다.',
+      icon: '🔍',
+    },
+    {
+      title: '상담 버튼 위치 최적화',
+      desc: '고객이 가장 많이 보는 위치에 상담 버튼을 배치합니다.',
+      icon: '🎯',
+    },
+    {
+      title: '모바일 문의 동선 구성',
+      desc: '모바일 사용자가 즉시 문의할 수 있도록 동선을 최적화합니다.',
+      icon: '📱',
+    },
+  ],
+};
+
+export const LANDING_DIAGNOSIS = {
+  title: '무료진단에서 이런 걸 확인해드립니다',
+  items: ['문의 구조 진단', '디자인·사용성 점검', '검색 노출 분석', '문의 개선 제안'],
+  ctaButton: '문의 늘리는 무료 진단',
+};
