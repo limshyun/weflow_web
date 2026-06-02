@@ -1,3 +1,5 @@
+'use client';
+
 import { Check } from 'lucide-react';
 import StickyForm from '@/components/ui/StickyForm';
 import { DIAGNOSIS_CHECKLIST } from '@/data/homeText';
