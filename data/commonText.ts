@@ -40,6 +40,18 @@ export const COMPANY_INFO = {
   facebook: 'https://www.facebook.com/profile.php?id=61590187124682',
 } as const;
 
+export const NAV = {
+  logo: 'WEFLOW',
+  links: [
+    { label: '홈',              href: '/' },
+    { label: '서비스',          href: '/services' },
+    { label: '제작플랜&가격안내', href: '/pricing' },
+    { label: '성공사례',        href: '/cases' },
+    { label: '예약',            href: '/reservation' },
+  ],
+  cta: '무료진단받기',
+} as const;
+
 export const SERVICE_TYPE_OPTIONS = [
   { value: 'landing' as const, label: '랜딩 페이지 제작' },
   { value: 'homepage' as const, label: '홈페이지 제작' },

@@ -5,14 +5,7 @@ import Image from 'next/image';
 import { useState } from 'react';
 import { Menu, X } from 'lucide-react';
 import { usePathname } from 'next/navigation';
-
-const NAV_LINKS = [
-  { href: '/', label: '홈' },
-  { href: '/services', label: '서비스' },
-  { href: '/pricing', label: '제작플랜&가격안내' },
-  { href: '/cases', label: '성공사례' },
-  { href: '/reservation', label: '예약' },
-];
+import { NAV } from '@/data/commonText';
 
 function openModal() {
   window.dispatchEvent(new Event('open-diagnosis-modal'));
@@ -36,7 +29,7 @@ export default function Header() {
 
         {/* 데스크탑 네비게이션 */}
         <nav className="hidden lg:flex items-center gap-8">
-          {NAV_LINKS.map(({ href, label }) => (
+          {NAV.links.map(({ href, label }) => (
             <Link
               key={href}
               href={href}
@@ -72,7 +65,7 @@ export default function Header() {
       {/* 모바일 메뉴 드로어 */}
       {menuOpen && (
         <div className="lg:hidden bg-[#0a0f1e]/98 backdrop-blur-md border-t border-white/[0.07] px-6 py-6 flex flex-col gap-4">
-          {NAV_LINKS.map(({ href, label }) => (
+          {NAV.links.map(({ href, label }) => (
             <Link
               key={href}
               href={href}

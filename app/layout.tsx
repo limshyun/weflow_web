@@ -33,12 +33,16 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ko" className={`${geistSans.variable} ${geistMono.variable}`}>
-      <body className="min-h-screen flex flex-col" suppressHydrationWarning>
+      <body
+        className="min-h-screen flex flex-col"
+        suppressHydrationWarning
+        style={{ paddingBottom: 'calc(64px + env(safe-area-inset-bottom, 0px))' }}
+      >
         <Header />
-        <FormModal />
         <main className="flex-1 pt-16">{children}</main>
         <Footer />
         <BottomBar />
+        <FormModal />
       </body>
     </html>
   );
