@@ -14,7 +14,7 @@ types/index.ts
 
 ---
 
-## types/index.ts — 공통 타입
+## types/index.ts
 
 ```ts
 // 문의/진단 폼
@@ -27,7 +27,7 @@ export interface DiagnosisForm {
   agreePrivacy: boolean;
 }
 
-// localStorage 저장용 문의 데이터
+// localStorage 저장용 문의
 export interface InquiryData extends DiagnosisForm {
   id: string;
   createdAt: string;
@@ -38,29 +38,15 @@ export interface InquiryData extends DiagnosisForm {
 export interface ReservationData {
   id: string;
   date: string;
-  timeSlot: string;
-  customTime: string;
+  time: string;
   name: string;
   phone: string;
-  serviceType: 'landing' | 'homepage' | 'both' | 'care';
+  type: string;
   industry: string;
-  message: string;
-  agreePrivacy: boolean;
+  request: string;
+  agree: boolean;
   createdAt: string;
   status: 'pending' | 'confirmed' | 'completed';
-}
-
-// 가격 플랜
-export interface Plan {
-  id: string;
-  badge?: string;
-  name: string;
-  subtitle?: string;
-  features: string[];
-  originalPrice: string;
-  discountPrice: string;
-  highlighted?: boolean;
-  crownIcon?: boolean;
 }
 
 // 성공사례
@@ -72,20 +58,7 @@ export interface CaseItem {
 // 후기
 export interface Review {
   text: string;
-  rating: number;  // 항상 5
-}
-
-// 제작 프로세스 단계
-export interface ProcessStep {
-  number: string;
-  title: string;
-  description: string;
-}
-
-// 광고 서비스 카드
-export interface AdService {
-  icon: string;
-  title: string;
+  rating: number;
 }
 ```
 
@@ -94,94 +67,196 @@ export interface AdService {
 ## data/commonText.ts
 
 ```ts
-import type { Review } from '@/types';
-
-export const REVIEWS: Review[] = [
-  { text: '문의 버튼 위치 바꾸고 상담 문의가 확실히 늘었어요.', rating: 5 },
-  { text: '수정 요청도 빠르게 처리해주셔서 만족합니다.', rating: 5 },
-  { text: '디자인보다 문의 구조를 신경 써주는 게 좋았습니다.', rating: 5 },
-  { text: '랜딩페이지 제작 후 상담 문의가 늘었어요.', rating: 5 },
-  { text: '설명도 쉽게 해주셔서 진행하기 편했습니다.', rating: 5 },
-  { text: '광고 연결까지 한 번에 진행돼서 편했어요.', rating: 5 },
-  { text: '피드백 속도가 진짜 빨랐습니다.', rating: 5 },
-  { text: '모바일 화면이 훨씬 보기 좋아졌어요.', rating: 5 },
-  { text: '생각보다 제작 기간이 빨라 놀랐습니다.', rating: 5 },
-  { text: '업종 특성에 맞게 잘 만들어주셨어요.', rating: 5 },
-  { text: '기획부터 같이 잡아줘서 부담이 없었습니다.', rating: 5 },
-  { text: '광고 세팅 방향도 알려줘서 도움됐어요.', rating: 5 },
-  { text: '예약 문의가 전보다 더 잘 들어옵니다.', rating: 5 },
-  { text: 'PT샵 구조를 잘 이해하고 계시더라고요.', rating: 5 },
-  { text: '필라테스 문의 동선이 훨씬 좋아졌어요.', rating: 5 },
-  { text: '보험 상담 페이지가 깔끔하게 정리됐어요.', rating: 5 },
-  { text: '수정 요청해도 응답이 빨라 좋았습니다.', rating: 5 },
-  { text: '홈페이지 만들고 끝이 아니라 관리도 해줘요.', rating: 5 },
-  { text: 'SEO 부분까지 신경 써줘서 만족합니다.', rating: 5 },
-  { text: '카카오 문의 연결이 편하게 바뀌었어요.', rating: 5 },
-  { text: '문의하기 버튼 위치가 확실히 효과 있네요.', rating: 5 },
-  { text: '초보라 아무것도 몰랐는데 쉽게 설명해줬어요.', rating: 5 },
-  { text: '비용 부담이 생각보다 적었습니다.', rating: 5 },
-  { text: '랜딩페이지 하나로 상담률이 올라갔어요.', rating: 5 },
-  { text: '다음 프로젝트도 위플로우랑 진행할 예정입니다.', rating: 5 },
-];
-
-export const COMPANY_INFO = {
-  name: 'WEFLOW',
-  ceo: '신서준',
-  bizNumber: '884-07-03480',
-  email: 'contact@weflowlab.kr',
-  hours: '연중무휴 24시간 상담가능',
-  kakao: 'http://pf.kakao.com/_xntCbX',
-  blog: 'https://m.blog.naver.com/weflowlab',
-  instagram: 'https://www.instagram.com/weflowlab.kr',
-  facebook: 'https://www.facebook.com/profile.php?id=61590187124682',
+export const NAV = {
+  logo: 'WEFLOW',
+  links: [
+    { label: '홈',            href: '/' },
+    { label: '서비스',        href: '/services' },
+    { label: '제작플랜&가격안내', href: '/pricing' },
+    { label: '성공사례',      href: '/cases' },
+    { label: '예약',          href: '/reservation' },
+  ],
+  cta: '무료진단받기',
 };
 
-export const SERVICE_TYPE_OPTIONS = [
-  { value: 'landing', label: '랜딩 페이지 제작' },
-  { value: 'homepage', label: '홈페이지 제작' },
-  { value: 'both', label: '랜딩 & 홈페이지 제작' },
-  { value: 'care', label: '기타(weflow케어플랜)' },
-] as const;
+export const FOOTER = {
+  tagline: '제작부터 관리까지\n비즈니스 성장을 함께합니다.',
+  info: { ceo, bizNo, email, hours },
+  legal: ['개인정보처리방침', '이용약관'],
+  copyright: '© 2026 WEFLOW. All rights reserved.',
+  links: {
+    service:  { title: '서비스',           items: [...] },
+    carePlan: { title: 'WEFLOW 케어플랜',  items: [...] },
+    contact:  { title: '상담문의',          items: [...] },
+  },
+};
+
+export const REVIEWS: Review[] = [...25개...];
+
+export const COMPANY_INFO = {
+  name, ceo, bizNumber, email, hours, kakao, blog, instagram, facebook
+};
+
+export const SERVICE_TYPE_OPTIONS = [...];
 ```
 
 ---
 
-## data/pricingText.ts
-
-모든 가격 플랜 데이터 (Plan[] 배열 × 4종)
+## data/homeText.ts
 
 ```ts
-export const CREATION_PLANS: Plan[] = [
-  {
-    id: 'start',
-    badge: 'START',
-    name: '랜딩페이지',
-    features: ['랜딩페이지 1페이지', '3~4일 빠른 제작기간', '반응형 제작 (PC/모바일)', '문의폼 연동', '기본 SEO 설정'],
-    originalPrice: '498,000원',
-    discountPrice: '249,000원',
-  },
-  {
-    id: 'grow',
-    badge: 'GROW',
-    name: '홈페이지',
-    features: ['홈페이지 5페이지', '1주 빠른 제작기간', '반응형 제작 (PC/모바일)', '문의폼 연동', '카카오톡 상담연동', '기본 SEO 설정'],
-    originalPrice: '1,980,000원',
-    discountPrice: '990,000원',
-  },
-  {
-    id: 'master',
-    badge: 'MASTER',
-    name: '랜딩&홈페이지',
-    features: ['홈페이지 + 랜딩페이지', '1~2주 빠른 제작기간', '반응형 제작 (PC/모바일)', '프리미엄 디자인', '예약·문의 시스템', 'SEO 최적화', '광고 전환 구조 설계'],
-    originalPrice: '2,980,000원',
-    discountPrice: '1,490,000원',
-    highlighted: true,
-    crownIcon: true,
-  },
-];
+// HeroSection용
+export const HERO = {
+  badge: string,
+  headline: string[3],
+  sub: string[2],
+  buttons: [{ label, href, primary }],
+  tags: [{ title, desc }],  // 4개
+};
 
-export const CARE_PLANS: Plan[] = [...];
-export const AD_PLANS: Plan[] = [...];
+// BenefitsSection + LandingFeaturesSection 공유
+export const BENEFITS = {
+  sectionTitle: 'WEFLOW만의 케어 플랜 혜택',
+  cards: [{ title, desc }],  // 6개
+};
+
+// ProcessSection (홈 전용 2-컬럼)
+export const PROCESS = {
+  timeline: {
+    title: '제작진행과정',
+    sub: string,
+    steps: [{ label, icon: 'user'|'tag'|'check'|'trending' }],  // 4개
+  },
+  sixSteps: {
+    title: '6단계 제작 프로세스',
+    sub: string,
+    steps: [{ number, label }],  // 6개
+  },
+};
+
+// CasesSection (홈 미리보기)
+export const CASES_SECTION = {
+  heading: string[2],
+  sub: string,
+  moreButton: '살펴보기 →',
+};
+
+// DiagnosisSection (홈)
+export const DIAGNOSIS = {
+  title: string,
+  subtitle: string,
+  items: [{ main, detail }],  // 4개
+  ctaButton: '무료진단 후 견적 받기',
+};
+```
+
+---
+
+## data/pricingText.ts (레퍼런스 기준 재작성 필요)
+
+```ts
+export const PRODUCTION_PLANS = {
+  sectionTitle: '제작 플랜',
+  notice: '3중 택1 필수',
+  plans: [
+    {
+      tier: 'BASIC',
+      name: '랜딩 페이지 제작',
+      originalPrice: '498,000원',
+      price: '249,000원',
+      unit: '/ 1회',
+      checklist: [{ ok: boolean, item: string }],
+    },
+    {
+      tier: 'PRO',
+      name: '홈페이지 제작',
+      originalPrice: '1,998,000원',
+      price: '999,000원',  // ← 990,000 아님
+      unit: '/ 1회',
+      checklist: [...],
+    },
+    {
+      tier: 'ALL-IN-ONE',
+      name: '랜딩&홈페이지 제작',
+      originalPrice: '2,198,000원',
+      price: '1,099,000원',  // ← 1,490,000 아님
+      unit: '/ 1회',
+      popular: true,
+      checklist: [...],
+    },
+  ],
+};
+
+export const CARE_PLANS = {
+  sectionTitle: 'WEFLOW 케어 플랜',
+  sub: '만든 후가 진짜 시작입니다. 지속 성장을 위한 케어 플랜을 선택하세요.',
+  notice: '3중 택1 필수',
+  plans: [
+    { tier: 'BASIC',      name: 'WE CARE',     subtitle: '기본 관리형',  originalPrice: '월 178,000원', price: '월 89,000원',  checklist: [...] },
+    { tier: 'STANDARD',   name: 'FLOW CARE',   subtitle: '성장형',       originalPrice: '월 378,000원', price: '월 189,000원', popular: true, checklist: [...] },
+    { tier: 'ALL-IN-ONE', name: 'WEFLOW CARE', subtitle: '프리미엄',     originalPrice: '월 578,000원', price: '월 339,000원', isTop: true,   checklist: [...] },
+  ],
+};
+
+export const AD_PLANS = {
+  sectionTitle: '광고 플랜',
+  plans: [
+    { name: '네이버 광고',        price: '일 149,000원~', theme: 'green',  desc: string, tags: string[] },
+    { name: '당근 플레이스 광고', price: '일 79,000원~',  theme: 'orange', desc: string, tags: string[] },
+  ],
+};
+
+export const PRICING_NOTICE = '모든 가격은 부가세(VAT) 포함입니다';
+```
+
+---
+
+## data/servicesText.ts (레퍼런스 기준 재작성 필요)
+
+```ts
+// ServiceProcessSection용 (6-step 카드 그리드)
+export const SERVICE_PROCESS = {
+  sectionTitle: '제작 진행 과정',
+  steps: [
+    { number: '01', title: '상담·진단',          desc: string },
+    { number: '02', title: '기획·설계',          desc: string },
+    { number: '03', title: '디자인',             desc: string },
+    { number: '04', title: '개발·테스트',        desc: string },
+    { number: '05', title: 'SEO 상단등록',       desc: string },
+    { number: '06', title: '광고운영·사후관리', desc: string },
+  ],
+};
+
+// ManagementSystemSection용 (3그룹 컬럼)
+export const MANAGEMENT_SYSTEM = {
+  sectionTitle: '광고 운영 · 사후관리 시스템',
+  sub: string,
+  groups: [
+    {
+      icon: '📢', title: '콘텐츠 마케팅', badge: '트래픽 확보', theme: 'orange',
+      items: [
+        { icon: '📝', title: '블로그 업로드',  desc: string },
+        { icon: '📸', title: '인스타 업로드', desc: string },
+        { icon: '🧵', title: '스레드 업로드', desc: string },
+      ],
+    },
+    {
+      icon: '🎯', title: '로컬 & 키워드 타겟팅', badge: '매출 전환', theme: 'blue',
+      items: [
+        { icon: '🔑', title: '네이버 키워드',  desc: string },
+        { icon: '🥕', title: '당근플레이스',   desc: string },
+      ],
+    },
+    {
+      icon: '🚀', title: '포털 SEO 최적화', badge: '상단 점유', theme: 'green',
+      items: [
+        { icon: '🔍', title: '네이버 서치어드바이저', desc: string },
+        { icon: '📊', title: '구글 콘솔',             desc: string },
+        { icon: '🗺️', title: '사이트맵 등록',         desc: string },
+      ],
+    },
+  ],
+};
 ```
 
 ---
@@ -189,21 +264,79 @@ export const AD_PLANS: Plan[] = [...];
 ## data/casesText.ts
 
 ```ts
-export const CASES: CaseItem[] = [
-  { slug: 'PT샵', name: 'PT샵' },
-  { slug: '필라테스', name: '필라테스' },
-  // ... 29개
-];
+// 성공사례 페이지용 (category + img 포함)
+export const CASES_PAGE = {
+  title: '성공 사례',
+  moreButton: '더보기 →',
+  moreHref: '/#form',
+  cases: [
+    { title: string, category: string, blogHref: string, img: string },
+    // 28개 업종 — /cases_*.jpg 이미지 매핑
+  ],
+};
+
+// 단순 slug 배열 (기타 용도)
+export const CASES: CaseItem[] = [...];
+```
+
+---
+
+## data/landingText.ts (레퍼런스 기준 재작성 필요)
+
+```ts
+export const LANDING_NOTICE = '※ 해당 페이지의 기능 및 혜택 안내는 랜딩페이지에서만 제공되는 내용입니다.';
+
+export const LANDING_HERO = {
+  badge: string,
+  headline: string[2],
+  sub: string,
+  buttons: [{ label, href, primary }],
+};
+
+export const LANDING_QUOTE = {
+  headline: string[2],
+  sub: string[3],
+};
+
+export const LANDING_STRUCTURE = {
+  title: '문의 증가 구조 설계',
+  items: [{ title, desc, icon }],  // 3개
+};
+
+export const LANDING_DIAGNOSIS = {
+  title: '무료진단에서 이런 걸 확인해드립니다',
+  items: string[4],
+  ctaButton: '문의 늘리는 무료 진단',
+};
+```
+
+---
+
+## data/reservationText.ts (레퍼런스 기준 재작성 필요)
+
+```ts
+export const RESERVATION_PAGE = {
+  title: '상담 예약',
+  subtitle: string,
+  timeSlots: string[8],
+  form: {
+    name:     { label: string, placeholder: string },
+    phone:    { label: string, placeholder: string },
+    type:     { label: string, options: string[] },
+    industry: { label: string, placeholder: string },
+    request:  { label: string, placeholder: string },
+    agree:    string,
+    submit:   string,
+  },
+};
 ```
 
 ---
 
 ## 구현 체크리스트
-- [ ] types/index.ts — 전체 공통 타입 정의
-- [ ] data/commonText.ts — 후기 25개, 회사정보, 제작종류 옵션
-- [ ] data/pricingText.ts — 가격 플랜 8개
-- [ ] data/casesText.ts — 29개 업종
-- [ ] data/servicesText.ts — 프로세스 6단계, 광고 서비스 8개
-- [ ] data/homeText.ts — 혜택 카드 6개, 태그 3개
-- [ ] data/landingText.ts — 강점 카드 5개, Why 텍스트
-- [ ] data/reservationText.ts — 시간대 슬롯 옵션
+- [ ] types/index.ts — ReservationData 필드 업데이트
+- [ ] data/pricingText.ts — 레퍼런스 구조로 완전 재작성 (가격 수정 포함)
+- [ ] data/servicesText.ts — SERVICE_PROCESS + MANAGEMENT_SYSTEM 구조로 재작성
+- [ ] data/landingText.ts — LANDING_NOTICE, HERO, QUOTE, STRUCTURE, DIAGNOSIS 구조로 재작성
+- [ ] data/reservationText.ts — RESERVATION_PAGE 구조로 재작성
+- [ ] data/commonText.ts — NAV, FOOTER 구조 추가

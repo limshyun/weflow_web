@@ -4,9 +4,14 @@
 ```
 app/landing/page.tsx
 features/landing/sections/LandingHeroSection.tsx
-features/landing/sections/CarePlanSection.tsx
-features/landing/sections/WhyWeflowSection.tsx
+features/landing/sections/LandingFeaturesSection.tsx
+features/landing/sections/LandingStructureSection.tsx
 features/landing/sections/LandingDiagnosisSection.tsx
+features/landing/sections/LandingProductionPlansSection.tsx   ← 가격 섹션 (별도)
+features/landing/sections/LandingCarePlansSection.tsx
+features/landing/sections/LandingAdPlansSection.tsx
+components/ui/ReviewSlider.tsx                                ← 재사용
+features/services/sections/ServiceProcessSection.tsx          ← 재사용
 data/landingText.ts
 ```
 
@@ -14,139 +19,200 @@ data/landingText.ts
 
 ## 페이지 레이아웃
 
-### 전체 구조
-```
-좌측 메인 콘텐츠 (flex-1)    |   우측 StickyForm (w-80, sticky top-20)
-─────────────────────────────┼──────────────────────────
-Hero                         │  무료진단 후 견적받기
-Care Plan 카드               │  [이름]
-Why WEFLOW                   │  [연락처]
-가격 카드 (pricing에서 동일)  │  [제작종류]
-제작진행과정 (services 동일)  │  [업종]
-무료진단 안내                │  [추가요청사항]
-후기 슬라이더                │  [개인정보동의]
-Footer (심플)                │  [신청하기]
-```
+```tsx
+<div className="pt-20 px-4 sm:px-6 xl:px-10">
+  {/* 상단 안내 배지 */}
+  <p className="text-xs text-amber-400 bg-amber-400/10 border border-amber-400/20 rounded-full px-4 py-2 inline-block">
+    {LANDING_NOTICE}
+  </p>
 
-모바일: StickyForm 숨김, 대신 BottomBar의 무료진단 버튼 사용
+  <div className="flex flex-col lg:flex-row lg:gap-10 xl:gap-14">
+    {/* 좌측: 메인 콘텐츠 */}
+    <div className="flex-1 min-w-0">
+      <LandingHeroSection />
+      <LandingFeaturesSection />
+      <LandingStructureSection />
+      <ServiceProcessSection />        {/* 서비스에서 재사용 */}
+      {/* 가격 섹션 헤더 + 3개 플랜 섹션 */}
+      <LandingProductionPlansSection />
+      <LandingCarePlansSection />
+      <LandingAdPlansSection />
+      {/* 후기 슬라이더 */}
+      <ReviewSlider />
+      <LandingDiagnosisSection />
+    </div>
+
+    {/* 우측: StickyForm (데스크탑 전용) */}
+    <aside className="hidden lg:block w-[340px] xl:w-[380px] shrink-0 py-6">
+      <div className="sticky-sidebar">
+        <StickyForm />
+      </div>
+    </aside>
+  </div>
+</div>
+```
 
 ---
 
-## 섹션 1 — LandingHeroSection
+## 섹션 1 — LandingHeroSection (중앙 정렬)
 
 ### 콘텐츠
 ```
-[큰 헤드라인]
-문의로 이어지는 홈페이지를 만듭니다
-
-[서브텍스트]
-기획부터 제작, 광고 연동, 운영 관리까지 WEFLOW가 함께합니다.
-
+[배지] 랜딩페이지 · 홈페이지 · 광고 운영 · 사후관리
+[헤드라인 2줄]
+문의로 이어지는
+홈페이지를 만듭니다
+[서브] 기획부터 제작, 광고 연동, 운영 관리까지 WEFLOW가 함께합니다.
 [버튼 2개]
-[무료 진단 후 견적받기]    [실제 제작 사례 보기]
+[무료 진단 후 견적받기 →]  →  /#form (StickyForm 스크롤)
+[실제 제작 사례 보기 →]     →  /cases
 ```
-
-### 버튼 동작
-| 버튼 | 동작 |
-|------|------|
-| 무료 진단 후 견적받기 | `open-diagnosis-modal` 이벤트 또는 `/#form` 스크롤 |
-| 실제 제작 사례 보기 | `/cases` 이동 |
+- 헤드라인: 흰색 텍스트 (홈의 그라디언트 텍스트와 다름)
+- 버튼: 첫 번째 `gradient-blue`, 두 번째 outline
 
 ---
 
-## 섹션 2 — WEFLOW CARE PLAN (5가지 강점)
+## 섹션 2 — LandingFeaturesSection
 
-### 섹션 제목
+### 구성 (2파트)
+**파트 1: BenefitsSection 동일 레이아웃 재사용**
+- 데스크탑: `BENEFITS.sectionTitle` + 가로 1행 카드
+- 모바일: overflow-x-auto 스크롤
+
+**파트 2: 인용 섹션 (Quote)**
 ```
-WEFLOW CARE PLAN
-제작부터 운영 · 광고 · 관리까지 한 번에
-```
+[" 아이콘 원]
 
-### 5개 강점 카드
-| 제목 | 내용 |
-|------|------|
-| 빠른 제작 진행 | 랜딩페이지 3~4일 / 홈페이지 약 1주일 / 빠르게 제작하고 빠르게 운영 시작합니다. |
-| 합리적인 비용 | 불필요한 비용 없이 필요한 기능만 구성하여 가성비 + 실속 + 퀄리티를 함께 제공합니다. |
-| 24시간 상담 가능 | 정해진 시간만 기다리지 마세요. 문의가 생길 때 언제든 빠른 상담 및 피드백 가능합니다. |
-| 제작 후 운영 관리 | 홈페이지 만들고 끝이 아닙니다. 검색 등록, 수정, 유지보수, 운영 관리까지 함께합니다. |
-| 광고 연동 지원 | 홈페이지 + 랜딩페이지 + 광고 한 번에 연결하여 문의가 들어오는 구조를 만듭니다. 인스타, 스레드, 블로그, 카카오톡, 당근 플레이스 등 |
-
----
-
-## 섹션 3 — Why WEFLOW (텍스트 강조 섹션)
-
-### 콘텐츠
-```
 사람들은 검색하고 비교한 뒤 문의합니다.
 홈페이지만 필요한 시대는 지났습니다.
 
 어디에 맡길지, 광고는 어떻게 해야 할지 고민되셨나요?
-
-WEFLOW는
-랜딩페이지 + 홈페이지 + 광고 + 사후관리까지
+WEFLOW는 랜딩페이지 + 홈페이지 + 광고 + 사후관리까지
 저렴한 비용과 높은 퀄리티로 한 번에 해결합니다.
 ```
 
-### 4가지 강점 포인트 (아이콘 + 텍스트)
-- 문의 증가 구조 설계
-- 업종별 고객 흐름 분석
-- 상담 버튼 위치 최적화
-- 모바일 문의 동선 구성
-
 ---
 
-## 섹션 4 — 가격 카드 (pricing 페이지에서 재사용)
-- `/pricing` 페이지의 전체 카드 8개를 그대로 사용
-- PlanSection + CarePlanSection + AdPlanSection 컴포넌트 임포트
-
----
-
-## 섹션 5 — 제작진행과정 (services 페이지에서 재사용)
-- `/services` 페이지의 ProcessSection 컴포넌트 임포트
-
----
-
-## 섹션 6 — LandingDiagnosisSection
+## 섹션 3 — LandingStructureSection
 
 ### 콘텐츠
 ```
-[큰 제목] 무료진단에서 이런 걸 확인해드립니다
+문의 증가 구조 설계
 
-[체크리스트]
-✓ 문의 구조 진단
-✓ 디자인 점검
-✓ 검색 노출 분석
-✓ 문의 개선 제안
-
-[버튼] 문의 늘리는 무료 진단 →
+[3칸 카드] grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto
 ```
 
-버튼 클릭 시: `open-diagnosis-modal` 이벤트
+| # | 아이콘 | 제목 | 설명 |
+|---|--------|------|------|
+| 01 | 🔍 | 업종별 고객 흐름 분석 | 업종 특성에 맞게 고객이 어떻게 검색하고 이동하는지 분석합니다. |
+| 02 | 🎯 | 상담 버튼 위치 최적화 | 고객이 가장 많이 보는 위치에 상담 버튼을 배치합니다. |
+| 03 | 📱 | 모바일 문의 동선 구성 | 모바일 사용자가 즉시 문의할 수 있도록 동선을 최적화합니다. |
 
 ---
 
-## 섹션 7 — 후기 슬라이더
-- ReviewSlider 컴포넌트 재사용 (전체 25개)
+## 섹션 4 — ServiceProcessSection 재사용
+- `features/services/sections/ServiceProcessSection.tsx` 그대로 임포트
 
 ---
 
-## 랜딩 전용 Footer (심플)
+## 섹션 5~7 — 가격 섹션 (3개)
+
+### 가격 섹션 헤더
 ```
-[logo_icon.png] WEFLOW
-대표: 신서준 | 사업자번호: 884-07-03480 | 이메일: contact@weflowlab.kr
-개인정보처리방침 | 이용약관
+[PRICING 배지]
+제작 플랜 & 가격 안내
+비즈니스 목적에 맞는 플랜을 선택하세요
 ```
-- 공통 Footer 대신 심플 버전 사용 (4컬럼 없음)
+
+### LandingProductionPlansSection
+- pricing 페이지의 `ProductionPlansSection`과 동일 레이아웃
+- 같은 `PRODUCTION_PLANS` 데이터 사용
+- "신청하기" → /reservation
+
+### LandingCarePlansSection
+- pricing 페이지의 `CarePlansSection`과 동일 레이아웃
+- 같은 `CARE_PLANS` 데이터 사용
+- WEFLOW CARE: crown-gradient 버튼
+
+### LandingAdPlansSection
+- `AD_PLANS` 데이터 사용
+- tags 배열을 ✓ 체크리스트로 표시 (간소화)
+
+---
+
+## 섹션 8 — ReviewSlider 재사용
+```tsx
+<section className="py-16 bg-slate-900/50 overflow-hidden">
+  <h2 className="text-2xl sm:text-3xl font-black text-white mb-8">고객 후기</h2>
+  <ReviewSlider />
+</section>
+```
+
+---
+
+## 섹션 9 — LandingDiagnosisSection
+
+### 콘텐츠
+```
+[max-w-2xl 중앙 카드]
+
+무료진단에서 이런 걸 확인해드립니다
+
+[2열 그리드 체크 아이템]
+✓ 문의 구조 진단       ✓ 디자인·사용성 점검
+✓ 검색 노출 분석       ✓ 문의 개선 제안
+
+[문의 늘리는 무료 진단] → /#form
+```
+
+---
+
+## 데이터 구조 (landingText.ts)
+
+```ts
+export const LANDING_NOTICE = '※ 해당 페이지의 기능 및 혜택 안내는 랜딩페이지에서만 제공되는 내용입니다.';
+
+export const LANDING_HERO = {
+  badge: '랜딩페이지 · 홈페이지 · 광고 운영 · 사후관리',
+  headline: ['문의로 이어지는', '홈페이지를 만듭니다'],
+  sub: '기획부터 제작, 광고 연동, 운영 관리까지 WEFLOW가 함께합니다.',
+  buttons: [
+    { label: '무료 진단 후 견적받기 →', href: '/#form', primary: true },
+    { label: '실제 제작 사례 보기 →', href: '/cases', primary: false },
+  ],
+};
+
+export const LANDING_QUOTE = {
+  headline: ['사람들은 검색하고 비교한 뒤 문의합니다.', '홈페이지만 필요한 시대는 지났습니다.'],
+  sub: ['어디에 맡길지, 광고는 어떻게 해야 할지 고민되셨나요?', 'WEFLOW는 랜딩페이지 + 홈페이지 + 광고 + 사후관리까지', '저렴한 비용과 높은 퀄리티로 한 번에 해결합니다.'],
+};
+
+export const LANDING_STRUCTURE = {
+  title: '문의 증가 구조 설계',
+  items: [
+    { title: '업종별 고객 흐름 분석', desc: string, icon: '🔍' },
+    { title: '상담 버튼 위치 최적화', desc: string, icon: '🎯' },
+    { title: '모바일 문의 동선 구성', desc: string, icon: '📱' },
+  ],
+};
+
+export const LANDING_DIAGNOSIS = {
+  title: '무료진단에서 이런 걸 확인해드립니다',
+  items: ['문의 구조 진단', '디자인·사용성 점검', '검색 노출 분석', '문의 개선 제안'],
+  ctaButton: '문의 늘리는 무료 진단',
+};
+```
 
 ---
 
 ## 구현 체크리스트
-- [ ] LandingHeroSection — 헤드라인 + 버튼 2개
-- [ ] CarePlanSection — 5가지 강점 카드
-- [ ] WhyWeflowSection — 텍스트 강조 + 4포인트
-- [ ] 가격 카드 컴포넌트 재사용
-- [ ] 제작진행과정 컴포넌트 재사용
-- [ ] LandingDiagnosisSection
+- [ ] LandingHeroSection — 중앙 정렬, 배지, 헤드라인, 버튼 2개
+- [ ] LandingFeaturesSection — Benefits 재사용 + Quote 인용
+- [ ] LandingStructureSection — 3카드 구조 설계
+- [ ] ServiceProcessSection 재사용
+- [ ] 가격 섹션 헤더 + 3개 플랜 섹션
 - [ ] ReviewSlider 재사용
-- [ ] StickyForm 우측 고정 (데스크탑)
-- [ ] 심플 Footer
+- [ ] LandingDiagnosisSection — 2열 체크 그리드
+- [ ] StickyForm 우측 aside (sticky-sidebar 클래스)
+- [ ] LANDING_NOTICE 앰버 배지
+- [ ] data/landingText.ts 재작성

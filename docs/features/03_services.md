@@ -3,85 +3,118 @@
 ## 파일 위치
 ```
 app/services/page.tsx
-features/services/sections/ProcessSection.tsx
-features/services/sections/AdManagementSection.tsx
+features/services/sections/ServiceProcessSection.tsx
+features/services/sections/ManagementSystemSection.tsx
 data/servicesText.ts
 ```
 
 ---
 
-## 섹션 구성 순서
+## 페이지 구성
 ```
-1. ProcessSection       — 제작진행과정 (6단계)
-2. AdManagementSection  — 광고 운영·사후관리 시스템 (카드형)
+1. ServiceProcessSection  — 6단계 제작 프로세스 (2행 3열 카드 그리드)
+2. ManagementSystemSection — 광고 운영·사후관리 (3그룹 컬럼 카드)
 ```
 
 ---
 
-## 섹션 1 — 제작진행과정
+## 섹션 1 — ServiceProcessSection
 
-### 섹션 제목
+### 레이아웃
+- `PROCESS` 배지 + 제목 + 설명
+- **Row 1**: 01~03 카드 + 화살표 (ChevronRight/ChevronDown)
+- 연결 표시 ("다음 단계로 진행")
+- **Row 2**: 04~06 카드 + 화살표
+- `grid grid-cols-1 md:grid-cols-[1fr_auto_1fr_auto_1fr]`
+
+### 카드 구조 (StepCard)
 ```
-제작진행과정
+┌─────────────────────────────┐
+│  [숫자 ghost — 우상단 배경] │
+│  [아이콘 박스]              │
+│  01  ← 번호                 │
+│  상담·진단 ← 제목           │
+│  업종 특성과... ← 설명      │
+└─────────────────────────────┘
 ```
+- 유령 번호: `absolute right-4 top-2 text-8xl text-white/[0.035]`
+- 아이콘 박스: `w-10 h-10 rounded-xl bg-blue-500/10 border border-blue-500/30`
 
-### 6단계 스텝
-각 스텝: 번호(01~06) + 단계명 + 설명
-
-| 번호 | 단계명 | 설명 |
-|------|--------|------|
-| 01 | 상담·진단 | 업종 및 제작 방향 확인 |
-| 02 | 기획·설계 | 문의 구조 및 전략 설계 |
-| 03 | 디자인 | 브랜드 맞춤 화면 구성 |
-| 04 | 개발·테스트 | 기능구현 최적화 검수 및 수정 진행 |
-| 05 | SEO 상단등록 | 네이버·구글·사이트맵 등록 |
-| 06 | 광고운영·사후관리 | 인스타·블로그·네이버 키워드 광고 운영관리 |
-
-### 레이아웃 옵션
-- 세로 타임라인형 (모바일/데스크탑 공통)
-- 각 스텝: 좌측 번호 원 + 세로 연결선 + 우측 텍스트
-- 번호 원: `gradient-blue` 배경
+### 아이콘 매핑 (lucide-react)
+| 단계 | 아이콘 |
+|------|--------|
+| 01 상담·진단 | MessageSquare |
+| 02 기획·설계 | LayoutTemplate |
+| 03 디자인 | Palette |
+| 04 개발·테스트 | Code2 |
+| 05 SEO 상단등록 | Rocket |
+| 06 광고운영·사후관리 | TrendingUp |
 
 ### TypeScript 타입
-→ `types/index.ts`의 `ProcessStep` 참조 (09_data_types.md)
+```ts
+// data/servicesText.ts
+export interface ServiceStep {
+  number: string;
+  title: string;
+  desc: string;
+}
+
+export const SERVICE_PROCESS = {
+  sectionTitle: '제작 진행 과정',
+  steps: ServiceStep[]
+}
+```
 
 ---
 
-## 섹션 2 — 광고 운영·사후관리 시스템
+## 섹션 2 — ManagementSystemSection
 
-### 섹션 제목
-```
-광고 운영 · 사후관리 시스템
-```
+### 레이아웃
+- `DETAIL` 배지 + 제목 + 설명
+- **3열 그룹 카드** (`grid grid-cols-1 lg:grid-cols-3 gap-5`)
+- 각 카드 상단: 컬러 테마 라인 (orange/blue/green)
 
-### 8개 카드 (그리드)
-`grid grid-cols-2 md:grid-cols-4 gap-4`
+### 3개 그룹
+| 그룹 | 아이콘 | 제목 | 배지 | 테마 |
+|------|--------|------|------|------|
+| 콘텐츠 마케팅 | 📢 | 콘텐츠 마케팅 | 트래픽 확보 | orange |
+| 로컬 & 키워드 타겟팅 | 🎯 | 로컬 & 키워드 타겟팅 | 매출 전환 | blue |
+| 포털 SEO 최적화 | 🚀 | 포털 SEO 최적화 | 상단 점유 | green |
 
-| 카드명 |
-|--------|
-| 블로그 업로드 |
-| 인스타 업로드 |
-| 스레드 업로드 |
-| 네이버 키워드 |
-| 당근플레이스 |
-| 네이버 서치어드바이저 |
-| 구글 콘솔 |
-| 사이트맵 등록 |
+### 그룹별 아이템
+**콘텐츠 마케팅 (orange)**
+- 📝 블로그 업로드 — 포스팅 발행을 통한 브랜드 지수 관리
+- 📸 인스타 업로드 — 트렌디한 피드/릴스 운영 및 유저 소통
+- 🧵 스레드 업로드 — 실시간 텍스트 기반 바이럴 확산
 
-### 카드 스타일
-```
-bg-slate-900/50 border border-white/[0.07] rounded-xl p-6
-중앙 정렬, 아이콘(lucide-react) + 텍스트
-hover: border-cyan-500/30
-```
+**로컬 & 키워드 타겟팅 (blue)**
+- 🔑 네이버 키워드 — 잠재 고객을 타겟팅한 효율적 키워드 세팅
+- 🥕 당근플레이스 — 지역 기반 타겟 노출 및 동네 주민 인증 광고
+
+**포털 SEO 최적화 (green)**
+- 🔍 네이버 서치어드바이저 — 네이버 검색 로봇 최적화 및 상단 노출
+- 📊 구글 콘솔 — 구글 검색 엔진 최적화 및 색인 생성
+- 🗺️ 사이트맵 등록 — 전 채널 검색 누락 방지 및 상단 노출 고정
 
 ### TypeScript 타입
-→ `types/index.ts`의 `AdService` 참조 (09_data_types.md)
+```ts
+export const MANAGEMENT_SYSTEM = {
+  sectionTitle: string,
+  sub: string,
+  groups: [{
+    icon: string,       // emoji
+    title: string,
+    badge: string,
+    theme: 'orange' | 'blue' | 'green',
+    items: [{ icon: string, title: string, desc: string }]
+  }]
+}
+```
 
 ---
 
 ## 구현 체크리스트
-- [ ] ProcessSection — 6단계 타임라인
-- [ ] AdManagementSection — 8개 카드 그리드
-- [ ] data/servicesText.ts — 데이터 분리
-- [ ] app/services/page.tsx — 조합
+- [ ] ServiceProcessSection — 2행 3열 카드 그리드 + 화살표
+- [ ] ManagementSystemSection — 3그룹 컬럼 + 테마 컬러 상단 라인
+- [ ] data/servicesText.ts — SERVICE_PROCESS, MANAGEMENT_SYSTEM 구조로 재작성
+- [ ] app/services/page.tsx — `pt-16` 래퍼 + 두 섹션 조합

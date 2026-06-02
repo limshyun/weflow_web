@@ -22,18 +22,21 @@ components/ui/FormModal.tsx
 ```tsx
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="ko">
-      <body>
+    <html lang="ko" className={geist.variable}>
+      {/* BottomBar(64px)만큼 하단 패딩 — iOS safe-area 대응 */}
+      <body style={{ paddingBottom: 'calc(64px + env(safe-area-inset-bottom, 0px))' }}>
         <Header />
-        <FormModal />       {/* 전역 모달 — body 최상위 */}
         <main>{children}</main>
         <Footer />
-        <BottomBar />       {/* 모바일 고정 하단바 */}
+        <BottomBar />
+        <FormModal />   {/* BottomBar 다음에 렌더링 — z-50으로 최상위 */}
       </body>
     </html>
   );
 }
 ```
+
+> **중요**: FormModal이 BottomBar 뒤에 와야 z-index 충돌 없음. body paddingBottom은 모바일에서 콘텐츠가 BottomBar에 가리지 않게 함.
 
 ---
 
@@ -70,10 +73,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 - 클릭 시 풀스크린 드로어 또는 드롭다운 메뉴
 - 동일한 네비게이션 링크 + 무료진단받기 버튼 포함
 
-### TypeScript 타입
-```ts
-// 별도 타입 없음, 순수 컴포넌트
-```
+### 데이터
+- 네비게이션 링크: `NAV.links` (commonText.ts)
+- CTA 텍스트: `NAV.cta` (commonText.ts)
+- 로고: `/logo_icon.png` — `width=48 height=48 object-contain`
+
+> Header는 `'use client'` 필수 (useState, window 이벤트 사용)
 
 ---
 
@@ -168,9 +173,9 @@ useEffect(() => {
 
 ### 스타일
 - 오버레이: `fixed inset-0 bg-black/60 backdrop-blur-sm z-50`
-- 모달 박스: `bg-slate-900 border border-white/10 rounded-2xl`
+- 모달 박스: `bg-slate-900 border border-white/10 rounded-2xl animate-modal-in`
 - 제출 버튼: `.gradient-blue`
-- 제출 시: localStorage에 저장 후 모달 닫기 (관리자에서 확인)
+- 제출 시: localStorage(`inquiries`)에 저장 후 모달 닫기
 
 ---
 

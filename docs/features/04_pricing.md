@@ -3,211 +3,199 @@
 ## 파일 위치
 ```
 app/pricing/page.tsx
-features/pricing/sections/PlanSection.tsx
-features/pricing/sections/CarePlanSection.tsx
-features/pricing/sections/AdPlanSection.tsx
-features/pricing/sections/PricingNotice.tsx
+features/pricing/sections/ProductionPlansSection.tsx
+features/pricing/sections/CarePlansSection.tsx
+features/pricing/sections/AdPlansSection.tsx
 data/pricingText.ts
 ```
 
 ---
 
-## 섹션 구성 순서
+## 페이지 구성
 ```
-1. PlanSection      — 제작 플랜 3종 (START / GROW / MASTER)
-2. CarePlanSection  — 케어 플랜 3종 (WE / FLOW / WEFLOW)
-3. AdPlanSection    — 광고 플랜 2종
-4. PricingNotice    — 공통 안내 문구
+페이지 헤더 (PRICING 배지 + 제목)
+1. ProductionPlansSection — 제작 플랜 3종
+2. CarePlansSection       — 케어 플랜 3종
+3. AdPlansSection         — 광고 플랜 2종
 ```
 
----
-
-## 핵심 디자인 패턴 — 파격세일 가격 표시
-```tsx
-<div className="mt-4">
-  {/* 취소선 원가 */}
-  <p className="text-slate-500 line-through text-sm">498,000원</p>
-  {/* 강조 할인가 */}
-  <p className="text-3xl font-bold text-white">249,000원</p>
-</div>
+### 페이지 헤더
+```
+[PRICING 배지]
+제작 플랜 & 가격 안내
+비즈니스 목적에 맞는 플랜을 선택하세요
 ```
 
 ---
 
-## 섹션 1 — 제작 플랜 (3중 택1)
+## 핵심 데이터 구조 (pricingText.ts)
 
-### 레이아웃
-- 세로 카드형 1열 (`flex flex-col gap-6 max-w-3xl mx-auto`)
-- 또는 3열 그리드 (`grid grid-cols-1 lg:grid-cols-3 gap-6`)
-- 모든 항목 앞에 ✓ 체크 표시
-
-### 플랜 데이터
-
-#### START — 랜딩페이지
-```
-✓ 랜딩페이지 1페이지
-✓ 3~4일 빠른 제작기간
-✓ 반응형 제작 (PC/모바일)
-✓ 문의폼 연동
-✓ 기본 SEO 설정
----
-원가: 498,000원
-할인가: 249,000원
-```
-
-#### GROW — 홈페이지
-```
-✓ 홈페이지 5페이지
-✓ 1주 빠른 제작기간
-✓ 반응형 제작 (PC/모바일)
-✓ 문의폼 연동
-✓ 카카오톡 상담연동
-✓ 기본 SEO 설정
----
-원가: 1,980,000원
-할인가: 990,000원
-```
-
-#### MASTER 👑 — 랜딩&홈페이지 (강조 — cyan 테두리, 왕관)
-```
-✓ 홈페이지 + 랜딩페이지
-✓ 1~2주 빠른 제작기간
-✓ 반응형 제작 (PC/모바일)
-✓ 프리미엄 디자인
-✓ 예약·문의 시스템
-✓ SEO 최적화
-✓ 광고 전환 구조 설계
----
-원가: 2,980,000원
-할인가: 1,490,000원
-```
-- 카드 테두리: `border-cyan-400/60`
-- 헤더 배경: `gradient-blue`
-- 왕관 뱃지: `👑 BEST` 또는 `Crown` 아이콘
-
-### TypeScript 타입
+### PRODUCTION_PLANS
 ```ts
-export interface Plan {
-  id: string;
-  badge?: string;          // 'MASTER 👑' 등
-  name: string;
-  features: string[];
-  originalPrice: string;
-  discountPrice: string;
-  highlighted?: boolean;   // MASTER = true
+{
+  sectionTitle: '제작 플랜',
+  notice: '3중 택1 필수',
+  plans: [
+    {
+      tier: 'BASIC',
+      name: '랜딩 페이지 제작',
+      originalPrice: '498,000원',
+      price: '249,000원',
+      unit: '/ 1회',
+      checklist: [{ ok: true, item: '3~4일 빠른 제작' }, ...],
+    },
+    {
+      tier: 'PRO',
+      name: '홈페이지 제작',
+      originalPrice: '1,998,000원',
+      price: '999,000원',     ← (990,000원 아님)
+      unit: '/ 1회',
+      checklist: [...],
+    },
+    {
+      tier: 'ALL-IN-ONE',
+      name: '랜딩&홈페이지 제작',
+      originalPrice: '2,198,000원',
+      price: '1,099,000원',   ← (1,490,000원 아님)
+      unit: '/ 1회',
+      popular: true,
+      checklist: [...],
+    },
+  ],
 }
 ```
 
----
-
-## 섹션 2 — 케어 플랜 (3종)
-
-### WE CARE — 기본 관리 플랜
-```
-✓ 유지보수(월 수정) 월 1회
-✓ 블로그: 월 1개
-✓ 인스타: 월 4회 (주 1회)
-✓ 스레드: 월 4회 (주 1회)
-✓ SEO 상단등록
----
-원가: 월 170,000원
-할인가: 월 89,000원~
+### CARE_PLANS
+```ts
+{
+  sectionTitle: 'WEFLOW 케어 플랜',
+  sub: '만든 후가 진짜 시작입니다...',
+  notice: '3중 택1 필수',
+  plans: [
+    { tier: 'BASIC',      name: 'WE CARE',      subtitle: '기본 관리형', originalPrice: '월 178,000원', price: '월 89,000원',  checklist: [...] },
+    { tier: 'STANDARD',   name: 'FLOW CARE',    subtitle: '성장형',      originalPrice: '월 378,000원', price: '월 189,000원', popular: true, checklist: [...] },
+    { tier: 'ALL-IN-ONE', name: 'WEFLOW CARE',  subtitle: '프리미엄',    originalPrice: '월 578,000원', price: '월 339,000원', isTop: true, checklist: [...] },
+  ],
+}
 ```
 
-### FLOW CARE — 성장 관리 플랜
-```
-✓ 유지보수: 월 3회
-✓ 인스타: 월 8회 (주 2회)
-✓ 스레드: 월 8회 (주 2회)
-✓ 블로그: 월 2회
-✓ 네이버 키워드 세팅 할인 (149,000 → 79,000원)
-✓ 당근 키워드 광고 세팅 50% 할인 (79,000 → 39,000원)
-✓ 문의 개선
-✓ SEO 상단 등록
----
-원가: 월 378,000원~
-할인가: 월 189,000원~
-```
+### AD_PLANS
+```ts
+{
+  sectionTitle: '광고 플랜',
+  plans: [
+    { name: '네이버 광고',        price: '일 149,000원~', theme: 'green',  desc: string, tags: string[] },
+    { name: '당근 플레이스 광고', price: '일 79,000원~',  theme: 'orange', desc: string, tags: string[] },
+  ],
+}
 
-### WEFLOW CARE 👑 — 올인원 관리 플랜 (강조)
-```
-✓ 유지보수: 무제한
-✓ 블로그: 월 4회 (주 1회)
-✓ 인스타: 월 12회 (주 3회)
-✓ 스레드: 월 12회 (주 3회)
-✓ 네이버 키워드/당근 플레이스 광고 세팅 무료
-✓ 월 성과 체크
-✓ 랜딩 개선
-✓ 광고관리
-✓ SEO 최적화
----
-원가: 월 678,000원~
-할인가: 월 339,000원~
-```
-- 강조 색상: `border-cyan-400/60` + 왕관 뱃지
-
----
-
-## 섹션 3 — 광고 플랜
-
-### 네이버 광고 (키워드 셋팅)
-```
-✓ 키워드 분석
-✓ 광고 세팅 지원
-✓ 광고 문구 제작
-✓ 문의 구조 연결
-✓ 채널 연동 지원
-✓ 성과 최적화
----
-원가: 298,000원
-할인가: 149,000원~
-```
-
-### 당근 플레이스 광고 (키워드 셋팅)
-```
-✓ 지역 키워드 분석
-✓ 광고 세팅 지원
-✓ 광고 문구 제작
-✓ 지역 타겟 설정
-✓ 랜딩 연결 지원
-✓ 성과 최적화
----
-원가: 158,000원
-할인가: 79,000원~
+export const PRICING_NOTICE = '모든 가격은 부가세(VAT) 포함입니다';
 ```
 
 ---
 
-## 섹션 4 — 공통 안내 (PricingNotice)
+## 섹션 1 — ProductionPlansSection
 
-### 각 카드 하단 또는 섹션 하단에 표시
+### 카드 레이아웃
+- `grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto`
+- popular(ALL-IN-ONE) 카드: 상단 cyan glow 라인 + "추천" 뱃지
+
+### 카드 구조 (위→아래)
 ```
-※ VAT 포함입니다.
+[tier badge: BASIC/PRO/ALL-IN-ONE]
+[플랜명]
+[빠른제작 기간 배지 — Zap 아이콘]
+원가: 498,000원 (취소선, 빨간색)
+249,000원  ← 크게
+VAT 포함
+
+✓ 3~4일 빠른 제작
+✓ 문의 구조 설계
+✗ (미포함 항목)
+
+[신청하기] → /reservation
+```
+
+### 체크리스트 구성 (BASIC)
+- ✓ 3~4일 빠른 제작
+- ✓ 문의 구조 설계
+- ✓ 모바일 최적화
+- ✓ 검색 노출 지원
+
+### 체크리스트 구성 (PRO)
+- ✓ 7일 빠른 제작기간
+- ✓ 업종 맞춤 구성
+- ✓ 모바일 최적화
+- ✓ 문의·예약 기능
+- ✓ 검색 노출 지원
+
+### 체크리스트 구성 (ALL-IN-ONE — popular)
+- ✓ 10~11일 빠른 제작기간
+- ✓ 업종 맞춤 구성
+- ✓ 문의 구조 설계
+- ✓ 모바일 최적화
+- ✓ 검색 노출 지원
+- ✓ 운영·관리 지원
+
+---
+
+## 섹션 2 — CarePlansSection
+
+### 카드 스타일 분기
+| 플랜 | 배경 | 강조 |
+|------|------|------|
+| WE CARE | 기본 slate | 기본 |
+| FLOW CARE (popular) | blue 계열 배경 | 파란 뱃지 "인기" |
+| WEFLOW CARE (isTop) | amber 계열 배경 | 👑 올인원 + crown-gradient 버튼 |
+
+### 체크리스트 구성
+**WE CARE**
+- 유지보수 : 월 1회 / 블로그 : 월 1개 / 인스타 : 월 4개 / SEO 상단등록
+
+**FLOW CARE**
+- 유지보수 : 월 3회 / 블로그 : 월 2개 / 인스타 : 월 8개
+- 네이버 키워드 세팅 할인 (149,000 → 79,000원)
+- 당근 키워드 광고 세팅 50% 할인 (79,000 → 39,000원)
+- 문의 개선 / SEO 상단등록
+
+**WEFLOW CARE**
+- 유지보수 : 무제한 / 블로그 : 월 4개 / 인스타 : 월 12개
+- 네이버 키워드/당근 플레이스 광고 세팅 무료
+- 월 성과 체크 / 랜딩 개선 / 광고관리 / SEO 상단관리
+
+---
+
+## 섹션 3 — AdPlansSection
+
+### 카드 레이아웃
+- `grid grid-cols-1 md:grid-cols-2 gap-6 max-w-2xl mx-auto`
+- 좌측 컬러 보더: `border-l-4 border-l-green-500` / `border-l-orange-500`
+
+### 네이버 광고 (green)
+- 가격: `일 149,000원~`
+- 설명: 네이버 검색 상위 노출로 더 많은 잠재 고객을 유입시킵니다
+- 태그: 검색 광고 운영 / 블로그 상위 노출 / 키워드 최적화 / 월간 성과 보고서
+
+### 당근 플레이스 광고 (orange)
+- 가격: `일 79,000원~`
+- 설명: 지역 고객에게 직접 도달하는 당근마켓 지역 광고를 운영합니다
+- 태그: 지역 타겟 광고 / 당근 플레이스 최적화 / 동네 비즈니스 홍보 / 소상공인 맞춤
+
+### 하단 도메인 안내
+```
 도메인은 고객님 명의로 등록되며 비용은 별도입니다.
-위플로우에서 등록 및 연결 세팅은 무료 지원해 드립니다.
-
-✓ 도메인 연결 지원
-✓ 도메인 등록 대행 가능
-✓ 도메인 비용 별도
-✓ 광고비는 고객 계정에서 고객 결제수단으로 직접 결제되며,
-  위플로우는 운영 및 세팅만 합니다.
-
-유지보수는 텍스트, 이미지, 링크 등 경미한 수정 기준입니다.
-페이지 추가 및 기능 개발은 별도 비용이 발생할 수 있습니다.
-```
-
-### 스타일
-```
-bg-slate-900/30 border border-white/[0.07] rounded-xl p-6
-text-slate-400 text-sm
+위플로우에서 등록 및 연결 세팅은 무료 지원해드립니다.
+✓ 도메인 연결 지원  ✓ 도메인 등록 대행 가능
+※ 도메인 비용 별도
+※ 광고비는 고객 계정에서 고객 결제수단으로 직접 결제
 ```
 
 ---
 
 ## 구현 체크리스트
-- [ ] PlanSection — START / GROW / MASTER 카드 (파격세일 UI)
-- [ ] CarePlanSection — WE / FLOW / WEFLOW CARE 카드
-- [ ] AdPlanSection — 네이버 / 당근 광고 카드
-- [ ] PricingNotice — 공통 안내 문구
-- [ ] MASTER & WEFLOW CARE — 강조 스타일 + 왕관
-- [ ] data/pricingText.ts — 가격 데이터 분리
+- [ ] pricingText.ts — PRODUCTION_PLANS, CARE_PLANS, AD_PLANS, PRICING_NOTICE 재작성
+- [ ] ProductionPlansSection — 3열 카드, tier badge, checklist, popular glow
+- [ ] CarePlansSection — WEFLOW CARE amber/crown 강조, FLOW CARE 인기 뱃지
+- [ ] AdPlansSection — 2열, 컬러 left border, tags
+- [ ] 각 섹션 하단 PRICING_NOTICE 배지
+- [ ] 신청하기 → /reservation 링크

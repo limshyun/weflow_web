@@ -3,29 +3,37 @@
 ## 파일 위치
 ```
 app/reservation/page.tsx
-features/reservation/sections/ReservationForm.tsx
+features/reservation/sections/ReservationFormSection.tsx
 features/reservation/sections/CalendarPicker.tsx
 data/reservationText.ts
 ```
 
 ---
 
-## 페이지 구성
-- 세로 단일 폼 레이아웃
-- `max-w-2xl mx-auto`
-- 상단 달력 → 하단 폼 순서
+## 페이지 구성 (3-Step 방식)
+
+```
+[배지] 무료 상담 예약 · 24시간 내 연락 · 맞춤 견적 제공
+[제목] (RESERVATION_PAGE.title)
+[아이콘 배지] 평균 24시간 내 연락 / 무료 진단 포함 / 케어 플랜 상담 가능
+
+Step 1: 날짜 선택 (CalendarPicker)
+Step 2: 시간 선택 (날짜 미선택 시 비활성)
+[선택된 일정 요약 배너]
+Step 3: 상담 신청 폼
+```
 
 ---
 
 ## CalendarPicker
 
-### 기능
-- 이번 달 달력 표시
-- 날짜 클릭 시 선택/해제 토글
-- 선택된 날짜: `gradient-blue` 배경
-- 지난 날짜: 비활성화 (`text-slate-600 cursor-not-allowed`)
+### 특징
+- `next/dynamic`으로 dynamic import (SSR false)
+- 이전달/다음달 이동
+- 지난 날짜 비활성
+- 선택된 날짜: cyan 강조
 
-### TypeScript 타입
+### Props
 ```ts
 interface CalendarProps {
   selectedDate: Date | null;
@@ -33,89 +41,80 @@ interface CalendarProps {
 }
 ```
 
-### 구현 방식
-- 외부 라이브러리 없이 순수 구현 (Date 객체 사용)
-- 이전/다음 달 이동 버튼 (`ChevronLeft`, `ChevronRight` — lucide-react)
+---
+
+## Step 2 — 시간대 선택
+
+- 날짜 선택 전: 비활성 상태 (`opacity-50`)
+- 버튼 그리드: `grid grid-cols-4 sm:grid-cols-6 gap-2`
+- 선택된 시간: `bg-cyan-500/20 border border-cyan-500/60 text-cyan-300`
 
 ---
 
-## ReservationForm
+## Step 3 — 상담 신청 폼
 
-### 폼 필드 (위→아래)
-| 필드 | 타입 | 비고 |
-|------|------|------|
-| 달력 (날짜 선택) | CalendarPicker | — |
-| 시간대 선택 | `select` 또는 버튼 그룹 | 오전/오후 슬롯 |
-| 이름 | `text` | 필수 |
-| 연락처 | `tel` | 필수 |
-| 제작종류 | `select` | 4가지 옵션 |
-| 원하시는 시간대 | `text` | 직접 입력 |
-| 업종 | `text` | 직접 입력 |
-| 추가요청사항 | `textarea` | — |
-| 개인정보 수집 및 상담 동의 | `checkbox` | 필수 |
+### 폼 필드 (아이콘 라벨 포함)
+| 아이콘 | 필드 | 타입 |
+|--------|------|------|
+| User | 이름 | text (required) |
+| Phone | 연락처 | tel (required) |
+| Briefcase | 제작종류 | select (required) |
+| Briefcase | 업종 | text (required) |
+| FileText | 추가요청사항 | textarea |
+| — | 개인정보 동의 | checkbox (required) |
 
-### 제작종류 옵션
-- 랜딩페이지 제작
-- 홈페이지 제작
-- 랜딩&홈페이지 제작
-- 기타(weflow 케어플랜)
-
-### 시간대 선택 (버튼 그룹)
-```
-[오전 10시]  [오전 11시]  [오후 1시]  [오후 2시]
-[오후 3시]   [오후 4시]   [오후 5시]  [협의 가능]
-```
-선택된 시간: `gradient-blue` 배경, 미선택: outline 스타일
-
-### TypeScript 타입
-```ts
-export interface ReservationData {
-  date: string;             // 'YYYY-MM-DD'
-  timeSlot: string;         // '오전 10시' 등
-  customTime: string;       // 직접 입력 시간
-  name: string;
-  phone: string;
-  serviceType: 'landing' | 'homepage' | 'both' | 'care';
-  industry: string;
-  message: string;
-  agreePrivacy: boolean;
-  createdAt: string;        // ISO 날짜 문자열
-  status: 'pending' | 'confirmed' | 'completed';
-}
-```
+### 제출 완료 상태
+- 별도 성공 화면으로 전환
+- CheckCircle2 아이콘 + "예약이 완료되었습니다!" 메시지
+- 선택된 일정 cyan 박스로 표시
 
 ---
 
-## 데이터 저장 (localStorage)
+## 데이터 구조 (reservationText.ts)
+
 ```ts
-// 예약 저장
-const saveReservation = (data: ReservationData) => {
-  const existing = JSON.parse(localStorage.getItem('reservations') || '[]');
-  existing.push({ ...data, id: Date.now().toString() });
-  localStorage.setItem('reservations', JSON.stringify(existing));
+export const RESERVATION_PAGE = {
+  title: '상담 예약',
+  subtitle: '원하시는 날짜와 시간대를 선택해 무료 상담을 예약하세요.',
+  timeSlots: [
+    '오전 10시', '오전 11시', '오후 1시', '오후 2시',
+    '오후 3시', '오후 4시', '오후 5시', '협의 가능',
+  ],
+  form: {
+    name:     { label: '이름',       placeholder: '이름을 입력해주세요' },
+    phone:    { label: '연락처',     placeholder: '010-0000-0000' },
+    type:     { label: '제작 종류',  options: ['랜딩페이지 제작', '홈페이지 제작', '랜딩&홈페이지 제작', '기타(weflow 케어플랜)'] },
+    industry: { label: '업종',       placeholder: '업종을 입력해주세요' },
+    request:  { label: '추가요청사항', placeholder: '원하시는 내용을 자유롭게 입력해주세요' },
+    agree:    '개인정보 수집 및 상담 동의 (필수)',
+    submit:   '상담 예약 신청하기',
+  },
 };
 ```
 
 ---
 
-## 폼 유효성 검사
-- 날짜 미선택 시: "날짜를 선택해주세요"
-- 이름/연락처 미입력 시: "필수 항목입니다"
-- 개인정보 동의 미체크 시: "개인정보 수집에 동의해주세요"
-- 연락처 형식: 숫자 + 하이픈만 허용
-
----
-
-## 제출 완료 UI
-- 성공 시: "예약이 접수되었습니다" 메시지 + 홈으로 이동 버튼
-- 모달 또는 인라인 메시지
+## localStorage 저장
+```ts
+const reservation = {
+  date: selectedDate.toISOString(),
+  time: selectedTime,
+  ...formData,
+  id: Date.now().toString(),
+  createdAt: new Date().toISOString(),
+  status: 'pending',
+};
+const existing = JSON.parse(localStorage.getItem('reservations') || '[]');
+localStorage.setItem('reservations', JSON.stringify([...existing, reservation]));
+```
 
 ---
 
 ## 구현 체크리스트
-- [ ] CalendarPicker — 날짜 선택 달력
-- [ ] 시간대 버튼 그룹
-- [ ] ReservationForm — 전체 폼
-- [ ] localStorage 저장 로직
-- [ ] 유효성 검사 + 에러 메시지
-- [ ] 제출 완료 UI
+- [ ] CalendarPicker — dynamic import, 날짜 선택, 지난날짜 비활성
+- [ ] Step 2 시간 버튼 그리드 — 날짜 선택 전 비활성
+- [ ] 선택 일정 요약 배너 (날짜+시간 선택 시 cyan으로 변경)
+- [ ] Step 3 폼 — 아이콘 라벨, RESERVATION_PAGE 데이터 활용
+- [ ] 제출 완료 화면 — 성공 메시지 + 선택 일정 표시
+- [ ] localStorage 저장
+- [ ] data/reservationText.ts — RESERVATION_PAGE 구조로 재작성

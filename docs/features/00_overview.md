@@ -51,7 +51,8 @@ weflow/
 │   └── ui/
 │       ├── FormModal.tsx
 │       ├── ReviewSlider.tsx
-│       └── StickyForm.tsx
+│       ├── StickyForm.tsx
+│       └── DiagnosisButton.tsx    # Server Component에서 모달 열기용
 ├── features/
 │   ├── home/sections/
 │   │   ├── HeroSection.tsx
@@ -61,10 +62,25 @@ weflow/
 │   │   ├── DiagnosisSection.tsx
 │   │   └── ReviewSection.tsx
 │   ├── landing/sections/
+│   │   ├── LandingHeroSection.tsx
+│   │   ├── LandingFeaturesSection.tsx
+│   │   ├── LandingStructureSection.tsx
+│   │   ├── LandingDiagnosisSection.tsx
+│   │   ├── LandingProductionPlansSection.tsx
+│   │   ├── LandingCarePlansSection.tsx
+│   │   └── LandingAdPlansSection.tsx
 │   ├── pricing/sections/
+│   │   ├── ProductionPlansSection.tsx
+│   │   ├── CarePlansSection.tsx
+│   │   └── AdPlansSection.tsx
 │   ├── services/sections/
+│   │   ├── ServiceProcessSection.tsx  # 랜딩에서도 재사용
+│   │   └── ManagementSystemSection.tsx
 │   ├── cases/sections/
+│   │   └── CasesGridSection.tsx
 │   └── reservation/sections/
+│       ├── ReservationFormSection.tsx
+│       └── CalendarPicker.tsx         # dynamic import (SSR false)
 ├── data/
 │   ├── commonText.ts
 │   ├── homeText.ts
