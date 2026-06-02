@@ -1,3 +1,4 @@
+import { Fragment } from 'react';
 import {
   MessageSquare, LayoutTemplate, Palette, Code2, Rocket, TrendingUp,
   ChevronRight, ChevronDown, type LucideIcon,
@@ -59,10 +60,10 @@ export default function ServiceProcessSection() {
         {/* Row 1: 01~03 */}
         <div className="grid grid-cols-1 md:grid-cols-[1fr_auto_1fr_auto_1fr] md:items-stretch">
           {row1.map((step, idx) => (
-            <>
-              <StepCard key={step.number} step={step} icon={ICONS[idx]} />
-              {idx < 2 && <Arrow key={`arrow-1-${idx}`} />}
-            </>
+            <Fragment key={step.number}>
+              <StepCard step={step} icon={ICONS[idx]} />
+              {idx < 2 && <Arrow />}
+            </Fragment>
           ))}
         </div>
 
@@ -76,10 +77,10 @@ export default function ServiceProcessSection() {
         {/* Row 2: 04~06 */}
         <div className="grid grid-cols-1 md:grid-cols-[1fr_auto_1fr_auto_1fr] md:items-stretch">
           {row2.map((step, idx) => (
-            <>
-              <StepCard key={step.number} step={step} icon={ICONS[3 + idx]} />
-              {idx < 2 && <Arrow key={`arrow-2-${idx}`} />}
-            </>
+            <Fragment key={step.number}>
+              <StepCard step={step} icon={ICONS[3 + idx]} />
+              {idx < 2 && <Arrow />}
+            </Fragment>
           ))}
         </div>
       </div>
