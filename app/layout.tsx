@@ -20,6 +20,10 @@ export const metadata: Metadata = {
   title: 'WEFLOW — 문의로 이어지는 홈페이지를 만듭니다',
   description:
     '랜딩페이지·홈페이지 제작부터 광고 운영·사후관리까지. WEFLOW가 함께합니다.',
+  icons: {
+    icon: '/logo_icon.png',
+    apple: '/logo_icon.png',
+  },
 };
 
 export default function RootLayout({

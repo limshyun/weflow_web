@@ -29,5 +29,4 @@ export const CASES: CaseItem[] = [
   { slug: '입시학원', name: '입시학원' },
   { slug: '개인과외', name: '개인과외' },
   { slug: '청소업체', name: '청소업체' },
-  { slug: '자동차디테일링2', name: '자동차 디테일링' },
 ];

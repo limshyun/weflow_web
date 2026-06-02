@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
 import { useState } from 'react';
 import { Menu, X } from 'lucide-react';
 import { usePathname } from 'next/navigation';
@@ -26,7 +27,7 @@ export default function Header() {
       <div className="max-w-7xl mx-auto px-4 h-full flex items-center justify-between">
         {/* 로고 */}
         <Link href="/" className="flex items-center gap-2" onClick={() => setMenuOpen(false)}>
-          {/* logo_icon.png: /public/logo_icon.png 에 파일 배치 필요 */}
+          <Image src="/logo_icon.png" alt="WEFLOW" width={32} height={32} className="rounded-sm" />
           <span className="text-xl font-bold tracking-tight">
             <span className="text-white">WE</span>
             <span className="text-gradient">FLOW</span>

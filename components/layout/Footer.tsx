@@ -1,15 +1,17 @@
 import Link from 'next/link';
+import Image from 'next/image';
 import { COMPANY_INFO } from '@/data/commonText';
 
 export default function Footer() {
   return (
-    <footer className="bg-[#0a0f1e] border-t border-white/10 pt-16 pb-8">
+    <footer className="bg-navy-950 border-t border-white/10 pt-16 pb-8">
       <div className="max-w-7xl mx-auto px-4">
         {/* 4컬럼 그리드 */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 mb-12">
           {/* 컬럼 1: 로고 + 회사정보 */}
           <div>
-            <div className="mb-4">
+            <div className="flex items-center gap-2 mb-4">
+              <Image src="/logo_icon.png" alt="WEFLOW" width={28} height={28} className="rounded-sm" />
               <span className="text-xl font-bold tracking-tight">
                 <span className="text-white">WE</span>
                 <span className="text-gradient">FLOW</span>

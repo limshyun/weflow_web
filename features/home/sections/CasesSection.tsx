@@ -35,13 +35,8 @@ export default function CasesSection() {
                   alt={item.name}
                   fill
                   className="object-cover group-hover:scale-105 transition-transform duration-300"
-                  onError={undefined}
-                  unoptimized
+                  sizes="(max-width: 768px) 50vw, 20vw"
                 />
-                {/* 이미지 없을 때 플레이스홀더 */}
-                <div className="absolute inset-0 bg-gradient-to-br from-slate-700 to-slate-800 flex items-center justify-center">
-                  <span className="text-slate-400 text-xs">{item.name}</span>
-                </div>
               </div>
               {/* 카드 하단 */}
               <div className="p-3">
