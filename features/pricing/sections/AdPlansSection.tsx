@@ -57,7 +57,10 @@ export default function AdPlansSection() {
               </div>
 
               {/* 가격 */}
-              <p className={`text-2xl font-black mb-3 ${t.price}`}>{plan.price}</p>
+              <div className="mb-3">
+                <p className="text-sm text-slate-500 line-through decoration-red-400 mb-0.5">{plan.originalPrice}</p>
+                <p className={`text-2xl font-black ${t.price}`}>{plan.price}</p>
+              </div>
 
               {/* 설명 */}
               <p className="text-sm text-slate-400 leading-relaxed mb-6 whitespace-pre-line">{plan.desc}</p>

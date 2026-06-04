@@ -4,7 +4,7 @@ import { CASES_SECTION } from '@/data/homeText';
 import { CASES_PAGE } from '@/data/casesText';
 
 export default function CasesSection() {
-  const cards = CASES_PAGE.cases.slice(0, 4);
+  const cards = CASES_PAGE.cases.slice(0, 5);
 
   return (
     <section className="relative py-16 px-4 sm:px-6 lg:px-8 overflow-hidden">
@@ -34,8 +34,8 @@ export default function CasesSection() {
           </Link>
         </div>
 
-        {/* 우측: 4개 카드 */}
-        <div className="flex-1 grid grid-cols-2 sm:grid-cols-4 gap-3">
+        {/* 우측: 5개 카드 */}
+        <div className="flex-1 grid grid-cols-2 sm:grid-cols-5 gap-3">
           {cards.map((item) => (
             <div
               key={item.title}
