@@ -27,7 +27,7 @@ export default function CasesSection() {
             </p>
           </div>
           <Link
-            href="/reservation"
+            href="/cases"
             className="inline-flex items-center px-5 py-2.5 rounded-xl text-sm font-bold text-white bg-blue-600 hover:bg-blue-500 transition-colors shadow-lg shadow-blue-500/20 self-start"
           >
             {CASES_SECTION.moreButton}
